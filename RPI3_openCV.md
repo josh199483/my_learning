@@ -53,20 +53,21 @@
     -D INSTALL_PYTHON_EXAMPLES=ON \
     -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.1.0/modules \
     -D BUILD_EXAMPLES=ON ..
+    (以下make -j4若有錯誤可在加 -D ENABLE_PRECOMPILED_HEADERS=OFF)
 ```
 * 編譯 Opencv   make -j4  是使用4核心
 >make -j4
 * 安裝OpenCV 3.1.0
 >sudo make install<br>
 >sudo ldconfig
-* 安裝後 OpenCV + Python 應該安裝在 /usr/local/lib/python3.4/site-packages/ 。可用 ls 指令查看
-> ls -l /usr/local/lib/python3.4/site-packages/
-* 檔名應該是 cv2.so 但是變成cv2.cpython-34m.so 需要手動變更檔案名稱
-> cd /usr/local/lib/python3.4/site-packages/<br>
->sudo mv cv2.cpython-34m.so cv2.so
-* CV2更名後要聯結Python 3.4的虛擬環境
-> cd ~/.virtualenvs/cv/lib/python3.4/site-packages/<br>
->ln -s /usr/local/lib/python3.4/site-packages/cv2.so cv2.so
+* 安裝後 OpenCV + Python 應該安裝在 /usr/local/lib/python3.5/site-packages/ 。可用 ls 指令查看
+> ls -l /usr/local/lib/python3.5/site-packages/
+* 檔名應該是 cv2.so 但是變成cv2.cpython-35m.so 需要手動變更檔案名稱
+> cd /usr/local/lib/python3.5/site-packages/<br>
+>sudo mv cv2.cpython-35m.so cv2.so
+* CV2更名後要聯結Python 3.5的虛擬環境
+> cd ~/.virtualenvs/cv/lib/python3.5/site-packages/<br>
+>ln -s /usr/local/lib/python3.5/site-packages/cv2.so cv2.so
 * 開啟一個新的 SSH 視窗確認OpenCV 安裝正常
 >workon cv<br>
 >python<br>

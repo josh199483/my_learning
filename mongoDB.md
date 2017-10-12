@@ -18,4 +18,60 @@ net start MongoDB (關閉服務)<br>
 若遇到啟動失敗，可試著刪除db/mongod.lock，接著執行<br>
 mongod --config D:\mongodb\mongod.cfg --remove<br>
 mongod --config D:\mongodb\mongod.cfg --install<br>
+## linux環境使用mongo
+mongod --dbpath ~/mongodb #自定義路徑，儲存data files<br>
+mongod --fork --logpath ~/log/mongodb.log #背景執行，並且把log寫入指定log檔
+# 三種關閉mongod的方式
+* use admin #在mongo shell裡      
+db.shutdownServer()
+* mongod --shutdown
+* kill -2 (mongod process ID)
+
+## mongodb權限管理
+因mongodb預設安裝好後是沒有保護機制的，需自行建立登入機制保護資料<br>
+```
+use admin
+db.createUser({user:"root",pwd:"PASSWORD",roles:[{role:"root",db:"admin"}]})
+#這樣就有一個root帳號了!
+```
+```
+接著創建專屬資料庫的帳號
+use test
+db.createUser({user:"admin",pwd:"PASSWORD",roles: [{ role: "readWrite", db: "test" }]}) #擁有管理者權限
+db.createUser({user:"user",pwd:"PASSWORD",roles: [{ role: "read", db: "test" }]}) #擁有使用者權限，接著登出
+
+mongod --auth --fork --dbpath ~/mongodb --logpath ~/log/mongodb.log #這時候在進mongodb就要使用帳號密碼登入
+登入遇到
+1.about to fork child process, waiting until server is ready for connections，
+ERROR: child process failed, exited with error number 100
+因為mongodb不正常關閉，刪除DBPATH裡的mongod.lock文件
+2.ERROR:  child process failed ,exited with error number 1
+增加DBPATH的寫入權限即可
+
+use admin
+db.auth("root", "PASSWORD") #以root登入
+use test
+db.auth("admin", "PASSWORD") #以admin權限登入test資料庫(讀寫皆可)
+db.auth("user", "PASSWORD") #以user權限登入test資料庫(只能讀)
+```
+
 ## 基本操作
+show dbs<br>
+* Collections List<br>
+1. show collections<br>
+2. show tables<br>
+3. db.getCollectionNames()<br>
+use (database name) #沒有該名稱資料庫就創建，若有就切換到該資料庫<br>
+* Create Operations<br>
+1. db.collection.insertOne() #創建一筆資料<br>
+2. db.collection.insertMany() #創建多筆資料(list)
+* Read Operations<br>
+1. db.collection.find()
+* Update Operations<br>
+1. db.collection.updateOne()<br>
+2. db.collection.updateMany()<br>
+3. db.collection.replaceOne()
+* Delete Operations<br>
+1. db.collection.deleteOne()<br>
+2. db.collection.deleteMany()
+
