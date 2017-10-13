@@ -71,7 +71,7 @@
 * 開啟一個新的 SSH 視窗確認OpenCV 安裝正常
 >workon cv<br>
 >python<br>
-```
+```python
 import cv2
 cv2.__version__
 ```
