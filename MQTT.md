@@ -47,10 +47,12 @@ client.loop_stop()
 這些函數是client 背後的驅動力量。如果沒有被調用，進入網路的數據將不會被處理，走出網路的數據也不會被及時的發送
 
 ## 3.RPI3 install mosquitto MQTT broker
-apt-get install mosquitto mosquitto-clients #安裝完成後服務會自動啟動<br>
-service mosquitto status #檢查mosquitto服務的狀態，若是綠色的active代表成功<br>
+```bash
+apt-get install mosquitto mosquitto-clients #安裝完成後服務會自動啟動
+service mosquitto status #檢查mosquitto服務的狀態，若是綠色的active代表成功
 mosquitto_sub -t first/test #訂閱這個主題
 mosquitto_pub -t first/test -m "Hello, world!" #發布訊息到這個主題
+```
 ### 訂閱多個主題
 sensors/temperature/+ #可取得temparature階層後的所有主題(只有一層)
 sensors/# #可取得sensors階層後的所有主題(不管有幾層)
