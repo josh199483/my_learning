@@ -1,6 +1,19 @@
+## 安裝python虛擬環境(windows)
+```bash
+pip install virtualenv
+pip install virtualenvwrapper-win
+mkvirtualenv flask #建立虛擬環境
+mkdir my_flask
+cd my_flask
+setprojectdir . #配置工作目錄，以後只要進虛擬環境，會自動進到這個目錄
+deactivate #跳出環境
+workon flask #進入環境
+```
 ## 安裝flask
-pip install flask<br>
+```
+pip install flask
 nano app.py
+```
 ```python
 from flask import Flask,render_template
 
