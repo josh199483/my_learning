@@ -41,3 +41,48 @@ body {
 
 ```
 接著python app.py即可在5000port看到該網頁
+## 模板繼承
+先定義一個基礎模板base.html，使用時機是有多個網頁需要大部分相同內容時，有提供4個block供使用，head、title、body、footer
+```html
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </head>
+<body>
+  <div id="content">{% block content %}{% endblock %}</div>
+  <div id="footer">
+    {% block footer %}
+    &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
+    {% endblock %}
+  </div>
+</body>
+</html>
+```
+```html
+//layout.html
+{% extends "layout.html" %}
+<html>
+  <head>
+{% block title %}Index{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+  </head>
+  
+  <body>
+{% block content %}
+  <h1>Index</h1>
+  <p class="important">
+    Welcome on my awesome homepage.
+{% endblock %}
+  </body>
+</html>
+```

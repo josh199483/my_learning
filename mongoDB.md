@@ -88,4 +88,13 @@ use (database name) #沒有該名稱資料庫就創建，若有就切換到該�
 * Delete Operations
 1. db.collection.deleteOne()
 2. db.collection.deleteMany()
-
+## 條件篩選
+```
+{<key>:<value>}
+{<key>:{$lte:<value>}}
+#小於等於
+```
+```
+db.collection.find({'list':{ $exists: true}},{ timestamp: 1,list:1,_id:0 }).limit(10)
+ #當list這個key存在時，只查詢timestamp,list欄位不要id欄位(因為預設是一定會給)，並且限制10筆
+```
