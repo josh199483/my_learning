@@ -13,14 +13,14 @@ Ajax：Asynchronous JavaScript and XML<br>
 .get()和.post()方法為高階方法，代表已經用.ajax()包裝成一種常用的方法<br>
 ```
 $.ajax({
-            type:"POST", //選擇POST方法
-            url:"{% url 'ajax' %}", //選擇要取得資訊的URL
-            data:{"a":a, "b":b}, //也可以額外傳送data到server端，經過server處理後再回傳
-            data-type:"json", //設定回傳格式
-            success: function(alldata){ //根據收到的response，取得json裡的資料，並且把資料做一些呈現或處理
-                    $('#result').html(alldata.result)
-                     }
-        })
+        type:"POST", //選擇POST方法
+        url:"{% url 'ajax' %}", //選擇要取得資訊的URL
+        data:{"a":a, "b":b}, //也可以額外傳送data到server端，經過server處理後再回傳
+        data-type:"json", //設定回傳格式
+        success: function(alldata){ //根據收到的response，取得json裡的資料，並且把資料做一些呈現或處理
+                $('#result').html(alldata.result)
+                }
+    })
 ```
 ## 3、與django搭配
 整個流程是這樣:前端發送HTTP文件、django接收HTTP文件並返回HTTP RESPONSE文件、前端接收RESPONSE並顯示結果
@@ -84,4 +84,67 @@ jqXHRobject1.done(callback)，此時只有jqXHRobject1的request成功才會呼�
 * .done()可以包含多個callbackFunction，success option只能有一個
 * 用.done()比較有可讀性
 * 不過success option一定比.done()早執行，因為是包含在ajax request裡面
+
+## ajax跟後端取值的方法(與flask)
+```js
+var jsondata1 =  {'data1':1,'data2',2};
+$.ajax({
+    type:"get",
+    url:myurl,
+    data:jsondata1,
+    dataType:"json",
+    success:callback_function()
+}); 
+```
+http://127.0.0.1/myWeb?data1=1&data2=2
+```python
+request.args.get('data1') #可正常取值
+request.args.get('data2')
+```
+```js
+var jsondata2 = {"data":{"data1":1,"data2":2}};
+$.ajax({
+    type:"get",
+    url:myurl,
+    data:jsondata2,
+    dataType:"json",
+    success:callback_function()
+}); //等同於$.getJSON()方法
+```
+http://127.0.0.1/myWeb?data[data1]=1&data[data2]=2
+```python
+request.args.get('data') #應該是取不到數據的，因為數據已經被轉換成如上的格式
+#request.args=ImmutableMultiDict([('data[data1]', '1'), ('data[data2]', '2')])
+request.args.get('data[data1]') #才取得到值
+#但這樣取值對城市讀起來很不友善，或如果有更多層json...，此處有改良方法
+data = json.loads(request.args.get('data')) #先做反序列化轉換成python dict
+print(data[data1]) #正常取值
+```
+```js
+//此處使用POST方法
+var layout = $('#layout')[0].outerHTML
+sessionStorage.setItem('layoutStatus', JSON.stringify({"html": layout}));
+var data = JSON.parse(sessionStorage.getItem('layoutStatus'))
+console.log(data)
+// var jsondata = {'data':data}
+//傳POST資料，要先把data做序列化，JSON.stringify
+$.ajax({
+    url:'/chartajax',
+    type:'POST',
+    contentType: 'application/json',
+    data:JSON.stringify(data),
+    datatype:'json'
+        
+})
+.done(function(msg){
+    console.log('testsession')
+    console.log(msg)
+})
+```
+```python
+if request.method == 'POST':
+    sessionData = request.get_json()
+    print(sessionData)
+    return jsonify(result='good')
+```
 
