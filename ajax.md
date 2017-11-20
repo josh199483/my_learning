@@ -148,3 +148,7 @@ if request.method == 'POST':
     return jsonify(result='good')
 ```
 
+## ajax flask 透過render_template()，直接載入帶資料的頁面
+流程是client端發送ajax請求，依照ajax請求的url在flask return render_template某個頁面，
+該頁面會是完整的html code，夾帶flask render資料的方式，例:{{data}}
+
