@@ -23,3 +23,5 @@ polling比較，具有很大的性能優勢。
 
 ## socket.io
 是一個支持 WebSocket 協議的用於即時通訊、跨平台的開源框架，Socket.io 設計的目標是支持任何的browser，但socket.io並不是只支持websocket通訊，如上面介紹的ajax polling、long polling都有支持
+
+## flask socket.io

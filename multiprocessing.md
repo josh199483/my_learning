@@ -1,3 +1,4 @@
+[網站寫得很詳細](http://wiki.jikexueyuan.com/project/explore-python/Process-Thread-Coroutine/thread.html)
 ## 使用process池來管理process
 ```
 def task(pid):

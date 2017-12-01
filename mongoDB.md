@@ -73,6 +73,7 @@ db.auth("user", "PASSWORD") #以user權限登入test資料庫(只能讀)
 ```
 
 ## 基本操作
+[覺得講的最詳細的網站，可參考](http://marklin-blog.logdown.com/posts/1392582)
 show dbs
 * Collections List
 1. show collections
@@ -113,3 +114,9 @@ One-to-Few (少量), One-to-Many (多量) 與 One-to-Squillions (海量)，實�
 若子document數量太多(幾百上下)，那一筆document大小可能就會超過限制的16MB，這時候就必須使用類似RDB的正規化作法，這時候就必須把被關聯的document放在另一個collection，透過Object id做關聯，實際查詢時透過 Application-level Join 進行反查
 ### 3.One-to-Squillions 海量級關聯模式 (Parent-Referencing)
 如果被參照的document有超過幾千筆以上，例如物聯網應用，會遇到用來存放Object id的陣列爆表，這時候就要用反過來進行參照，把主document的id也放進子document的參照id裡
+
+## aggregate聚合
+[覺得講的最詳細的網站，可參考](http://marklin-blog.logdown.com/posts/1394100-mongodb-polymerization-of-30-14-1-aggregate-framework-with-buckle)
+
+
+
