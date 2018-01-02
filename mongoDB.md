@@ -99,8 +99,14 @@ use (database name) #沒有該名稱資料庫就創建，若有就切換到該�
 #小於等於
 ```
 ```
+#當list這個key存在時，只查詢timestamp,list欄位不要id欄位(因為預設是一定會給)，並且限制10筆
 db.collection.find({'list':{ $exists: true}},{ timestamp: 1,list:1,_id:0 }).limit(10)
- #當list這個key存在時，只查詢timestamp,list欄位不要id欄位(因為預設是一定會給)，並且限制10筆
+```
+```
+#把list的第一個element的count給定NumberInt(2)，不然直接給2會是浮點數
+db.collection.update({'ID':'1'},{$set:{'list.0.count':NumberInt(2)}})
+#把list用unset取消掉該欄位
+db.collection.update({'ID':'1'},{$unset:{'list':''}})
 ```
 ## mongodb schema 設計
 [mongoDB設計模式](https://blog.toright.com/posts/4483/mongodb-schema-%E8%A8%AD%E8%A8%88%E6%8C%87%E5%8D%97.html)
@@ -117,6 +123,46 @@ One-to-Few (少量), One-to-Many (多量) 與 One-to-Squillions (海量)，實�
 
 ## aggregate聚合
 [覺得講的最詳細的網站，可參考](http://marklin-blog.logdown.com/posts/1394100-mongodb-polymerization-of-30-14-1-aggregate-framework-with-buckle)
+
+## 查看document大小
+Object.bsonsize(db.test.findOne({name:"123"})) #可看到該筆紀錄大小
+
+## mongodb的$字號運用!!!懂了後發現好神R!!!
+```json
+{ "_id" : 1,
+  "name" : "wayne",
+  "book" : [
+    { "bookId" : 23,
+      "title" : "23",
+      "color" : "red",
+    },
+    { "bookId" : 41,
+      "title" : "41",
+      "color" : "blue"
+    }
+  ]
+}
+# 若要更新book list裡面當subdocument的bookId為特定值(例:41)的description(原本沒有的欄位)，有點拗口...，來看個範例吧!
+# 因為是原本沒有的欄位，所以使用{upsert:true}參數，代表當沒有此欄位時就insert一筆
+# $字號在此的用處是update的條件有book.bookId，那後面要更改的欄位加上$字號代表會參照前面相同位置的條件(placeholder)去更改
+db.test.updateOne({'name':'wayne','book.bookId':41},{$set:{'book.$.description':'test'}},{upsert:true})
+{ "_id" : 1,
+  "name" : "wayne",
+  "book" : [
+    { "bookId" : 23,
+      "title" : "23",
+      "color" : "red"
+    },
+    { "bookId" : 41,
+      "title" : "41",
+      "color" : "blue",
+      "description": "test" #!!!!!!!!
+    }
+  ]
+
+}
+
+```
 
 
 
