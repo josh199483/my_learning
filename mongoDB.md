@@ -20,7 +20,7 @@ mongod --config D:\mongodb\mongod.cfg --install
 
 net start MongoDB (啟動服務)
 
-net start MongoDB (關閉服務)
+net stop MongoDB (關閉服務)
 
 若遇到啟動失敗，可試著刪除db/mongod.lock，接著執行
 
