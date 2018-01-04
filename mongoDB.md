@@ -93,7 +93,7 @@ use (database name) #沒有該名稱資料庫就創建，若有就切換到該�
 1. db.collection.deleteOne()
 2. db.collection.deleteMany()
 ## 條件篩選
-```
+```bash
 {<key>:<value>}
 {<key>:{$lte:<value>}}
 #小於等於
@@ -123,7 +123,60 @@ One-to-Few (少量), One-to-Many (多量) 與 One-to-Squillions (海量)，實�
 
 ## aggregate聚合
 [覺得講的最詳細的網站，可參考](http://marklin-blog.logdown.com/posts/1394100-mongodb-polymerization-of-30-14-1-aggregate-framework-with-buckle)
-
+### $lookup字符
+mongoDB在3.2版後aggregate有支援$lookup功能，簡單來說就是join的功能，讓兩個有關連的表能夠依照foreign key來做embedded，廢話不多說直接看官方例子
+```bash
+orders
+{ "_id" : 1, "item" : "almonds", "price" : 12, "quantity" : 2 },
+{ "_id" : 2, "item" : "pecans", "price" : 20, "quantity" : 1 },
+{ "_id" : 3  }
+inventory
+{ "_id" : 1, "sku" : "almonds", description: "product 1", "instock" : 120 },
+{ "_id" : 2, "sku" : "bread", description: "product 2", "instock" : 80 },
+{ "_id" : 3, "sku" : "cashews", description: "product 3", "instock" : 60 },
+{ "_id" : 4, "sku" : "pecans", description: "product 4", "instock" : 70 },
+{ "_id" : 5, "sku": null, description: "Incomplete" },
+{ "_id" : 6 }
+# 這邊以orders collection當作主document
+db.orders.aggregate([
+   {
+     $lookup:
+       {
+         from: "inventory", # from就是要join哪個collection
+         localField: "item", # 以自己的哪個field去對照foreign key
+         foreignField: "sku", # 對照inventory collection的哪個field
+         as: "inventory_docs" # 新取的一個field名字
+       }
+  }
+])
+# 結果如下，inventory_docs會變成一個list包含所有參照到foreign key的document
+# 因orders {'_id':3}這筆資料沒有'item'視為null，所以對照到inventory的{'_id':5}、{'_id':6}
+{
+   "_id" : 1,
+   "item" : "almonds",
+   "price" : 12,
+   "quantity" : 2,
+   "inventory_docs" : [
+      { "_id" : 1, "sku" : "almonds", "description" : "product 1", "instock" : 120 }
+   ]
+}
+{
+   "_id" : 2,
+   "item" : "pecans",
+   "price" : 20,
+   "quantity" : 1,
+   "inventory_docs" : [
+      { "_id" : 4, "sku" : "pecans", "description" : "product 4", "instock" : 70 }
+   ]
+}
+{
+   "_id" : 3,
+   "inventory_docs" : [
+      { "_id" : 5, "sku" : null, "description" : "Incomplete" },
+      { "_id" : 6 }
+   ]
+}
+```
 ## 查看document大小
 Object.bsonsize(db.test.findOne({name:"123"})) #可看到該筆紀錄大小
 
@@ -156,13 +209,54 @@ db.test.updateOne({'name':'wayne','book.bookId':41},{$set:{'book.$.description':
     { "bookId" : 41,
       "title" : "41",
       "color" : "blue",
-      "description": "test" #!!!!!!!!
+      "description": "test"
     }
   ]
-
 }
-
 ```
+## mongodb的事務操作
+[參考網頁](http://marklin-blog.logdown.com/posts/1394578)
 
+事務操作是指甚麼呢?簡單來說就是一個工作流程，像是做麵包，要先買材料、擀麵糰、加調味料、放進烤箱，就是一個事務操作。
+
+假設我有一個資料庫包含訂單資料、客戶資料，當一個客戶要下訂單時，會有兩階段，1.先在訂單資料新增一筆紀錄，2.再去客戶資料進行扣款，那如果只做到第一階段系統就當掉了，這個事務就會保證要嘛整個事務全部完成，要嘛全部沒完成。
+
+ACID這四個原則可去wiki查看看
+
+但MongoDB並不支援事務操作，只有符合各自特性的操作
+
+1.在單個 document 上有提供原子性操作 findAndModify
+```
+如上面講的範例，在mongodDB我們就需要做反正規化，讓訂單和客戶資料在同一個collection，才可以符合原子性操作
+```
+2.對多個 document 使用 $isolate
+```
+$isolate可以讓我們在更新大量document，其他thread無法讀寫正在更新的document，但就會有幾個問題
+1.效能問題，因為等於強制等更新完才能做操作
+2.並沒有支援原子性操作
+3.不支援分片
+```
+3.Two Phase Commits 來模擬事務操作
+```
+mongoDB官網有提供一種自行手動建立事務操作的範例，在進行大量更新時，若發生錯誤，則之前更新的會全部還原
+```
+## mongoDB索引
+[參考網頁](http://marklin-blog.logdown.com/posts/1394035-30-11-index-of-mongodb-1-button)
+建立索引就像建立一個目錄一樣
+
+優點:
+- 搜尋速度極快
+- 使用分組或排序也很快
+
+缺點:
+- 進行增、刪、改動作時，會更花費時間，因為要連索引一起更改
+- 索引也需要占空間
+
+使用時機:
+- 搜尋結果佔原collection越小
+- 常用的搜尋
+- 該搜尋造成性能瓶頸
+- 在經常需要排序的搜尋
+- 當索引性能大於增、刪、改性能時
 
 
