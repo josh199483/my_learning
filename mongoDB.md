@@ -33,6 +33,9 @@ mongod --config D:\mongodb\mongod.cfg --install
 mongod --dbpath ~/mongodb #自定義路徑，儲存data files
 
 mongod --fork --logpath ~/log/mongodb.log #背景執行，並且把log寫入指定log檔
+
+#可以去修改/etc/mongod.conf的組態檔
+sudo service mongod restart
 ```
 
 # 三種關閉mongod的方式

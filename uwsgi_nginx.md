@@ -6,12 +6,20 @@ sudo apt-get install python3-pip python3-dev nginx
 ```
 ## 安裝套件
 ```bash
-sudo pip3 install virtualenv
+sudo pip3 install virtualenv virtualenvwrapper
+# 把以下幾行加到~/.bashrc
+export WORKON_HOME=$HOME/.virtualenvs
+#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
+# 接著重新載入，讓以下兩個檔案知道我們有做更動
+source /usr/local/bin/virtualenvwrapper.sh
+source ~/.bashrc
 # 若有需要update，pip3 install --upgrade pip即可
 mkdir ~/myflask
 cd ~/myflask
-virtualenv flaskenv
-source flaskenv/bin/activate
+mkvirtualenv -p python3.5 <name_of_env> # 要看當前系統有哪個版本的python
+setvirtualenvproject . # 綁定目前資料夾，以後workon env時直接進該資料夾
+workon <env_name> # 啟動env
+
 pip install uwsgi flask #進到虛擬環境後再安裝，不需要打pip3
 nano ~/myflask/myflask.py
 sudo ufw allow 5000
@@ -58,7 +66,7 @@ logto = /home/to/log/myflask.log
 chmod-socket = 666
 vacuum = true
 
-# processes = 5 代表要啟動3個子進程處理請求
+# processes = 5 代表要啟動5個子進程處理請求
 # chdir = /home/ubuntu/myflask 切換路徑到wsgi.py的資料夾
 # socket = /path/to/sock/myflask.sock 是uwsgi啟動後所需要創建的檔案，這檔案用來和Nginx通訊，會在配置Nginx時用到，所以 chmod-socket = 660是為了修改.sock檔案權限來和Nginx通訊
 # logto = /home/to/log/myflask.log 選擇了uwsgi日誌資料夾，uwsgi會將請求log寫入該檔案
