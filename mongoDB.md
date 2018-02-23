@@ -20,13 +20,32 @@ mongod --config D:\mongodb\mongod.cfg --install
 
 net start MongoDB (啟動服務)
 
-net start MongoDB (關閉服務)
+net stop MongoDB (關閉服務)
 
 若遇到啟動失敗，可試著刪除db/mongod.lock，接著執行
 
 mongod --config D:\mongodb\mongod.cfg --remove
 
 mongod --config D:\mongodb\mongod.cfg --install
+
+## ubuntu 16.04 安裝mongodb3.6
+[官方文章，也有其他作業系統](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+``` bash
+# 透過public key，確保package的一致性
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+
+# 建立mongodb的列表，這是ubuntu 14.04版的
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
+
+# 建立mongodb的列表，這是ubuntu 16.04版的
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
+
+# 更新的本地package
+sudo apt-get update
+
+# 安裝mongodb stable version
+sudo apt-get install -y mongodb-org
+```
 
 ## linux環境使用mongo
 ```bash
@@ -262,4 +281,34 @@ mongoDB官網有提供一種自行手動建立事務操作的範例，在進行�
 - 在經常需要排序的搜尋
 - 當索引性能大於增、刪、改性能時
 
+## mongoDB性能調適
+```bash
+#可以查看該查詢的詳細資料，verbose有三個可選選項queryPlanner,executionStats,allPlansExecution，預設是queryPlanner
+cursor.explain(verbose) 
+# 我比較常看的是executionStats
+# nReturned代表最後回傳的結果數目
+# totalKeysExamined代表總共搜尋的索引數目
+# totalDocsExamined代表總共搜尋的document數目
+"executionStats" : {
+   "executionSuccess" : <boolean>,
+   "nReturned" : <int>,
+   "executionTimeMillis" : <int>,
+   "totalKeysExamined" : <int>,
+   "totalDocsExamined" : <int>,
+   "executionStages" : {
+      ...
+   },
+   "allPlansExecution" : [
+      { <partial executionStats1> },
+      { <partial executionStats2> },
+      ...
+   ]
+}
+# 如果完美使用索引的話三個值會是完全相等，但在現實中不太可能遇到...
+# 如果有多個索引，mongo會幫我們挑選最佳索引，但是是以totalDocsExamined最低的為挑選依據
+# 所以如果有排序的狀況，mongo沒辦法幫我們挑選最佳索引
+# 有時候我們挑選索引不希望用mongo挑選的最佳索引，可以使用hint強迫使用該索引
+db.test.find({'name':'john','age':23}).sort({'age':1}).hint({'age':1,'name':1}).explain()
+
+```
 

@@ -46,7 +46,7 @@ and 條件式2;
 比對刪除條件值資料	delete from 資料表名稱 where 欄位名 like '%字串%';	
 
 ## root權限管理使用者和資料庫
-mysql -u root -p #以root權限登入<br>
+mysql -h (ip address，localhost就不需要了) -u (username) -p (password)#以root權限登入<br>
 create database (dbname);<br>
 create user 'user'@'localhost' identified by 'passwword';<br>
 grant all privileges on (dbname).* to 'user'@'localhost';<br>
