@@ -42,9 +42,17 @@ echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongod
 
 # 更新的本地package
 sudo apt-get update
+# 如果update結束後出現一些error是說找不到某些package或是有衝突等等，可以先清掉mongodb的repository，然後再從頭做一遍!
+sudo rm /etc/apt/sources.list.d/mongodb*.list
 
 # 安裝mongodb stable version
 sudo apt-get install -y mongodb-org
+
+# 啟動服務
+sudo systemctl start mongod
+
+# 開機後自動啟動
+sudo systemctl enable mongod
 ```
 
 ## linux環境使用mongo
@@ -53,8 +61,6 @@ mongod --dbpath ~/mongodb #自定義路徑，儲存data files
 
 mongod --fork --logpath ~/log/mongodb.log #背景執行，並且把log寫入指定log檔
 
-#可以去修改/etc/mongod.conf的組態檔
-sudo service mongod restart
 ```
 
 # 三種關閉mongod的方式
@@ -65,18 +71,20 @@ db.shutdownServer()
 
 ## mongodb權限管理
 因mongodb預設安裝好後是沒有保護機制的，需自行建立登入機制保護資料<br>
-```bash
-use admin
-db.createUser({user:"root",pwd:"PASSWORD",roles:[{role:"root",db:"admin"}]})
-#這樣就有一個root帳號了!
-```
-```bash
-接著創建專屬資料庫的帳號
-use test
-db.createUser({user:"admin",pwd:"PASSWORD",roles: [{ role: "dbOwner", db: "test" }]}) #db擁有者
-db.createUser({user:"admin",pwd:"PASSWORD",roles: [{ role: "readWrite", db: "test" }]}) #擁有讀寫權限
-db.createUser({user:"user",pwd:"PASSWORD",roles: [{ role: "read", db: "test" }]}) #擁有讀權限，接著登出
 
+```bash
+# 進mongo shell
+mongo
+#這樣就有一個root帳號了!
+>>> use admin
+>>> db.createUser({user:"root",pwd:"PASSWORD",roles:[{role:"root",db:"admin"}]})
+
+#接著創建專屬資料庫的帳號
+>>> use test
+>>> db.createUser({user:"admin",pwd:"PASSWORD",roles: [{ role: "dbOwner", db: "test" }]}) #db擁有者
+>>> db.createUser({user:"admin",pwd:"PASSWORD",roles: [{ role: "readWrite", db: "test" }]}) #擁有讀寫權限
+>>> db.createUser({user:"user",pwd:"PASSWORD",roles: [{ role: "read", db: "test" }]}) #擁有讀權限，接著登出
+>>> exit or ctrl+c
 #這時候在進mongodb就要使用帳號密碼登入
 登入遇到
 1.about to fork child process, waiting until server is ready for connections，
@@ -87,11 +95,22 @@ ERROR: child process failed, exited with error number 100
 
 mongod --auth --fork --logpath ~/log/mongodb.log --dbpath ~/mongodb (要加--auth才行)
 
-use admin
-db.auth("root", "PASSWORD") #以root登入
-use test
-db.auth("admin", "PASSWORD") #以admin權限登入test資料庫(讀寫皆可)
-db.auth("user", "PASSWORD") #以user權限登入test資料庫(只能讀)
+# 如果要用系統服務，就去更改/etc/mongod.conf組態檔
+security:
+  authorization: enabled
+
+# 服務重啟一次即可
+sudo systemctl restart mongod
+
+# 進mongo shell
+mongo
+
+>>> use admin
+>>> db.auth("root", "PASSWORD") #以root登入，出現 1 就是成功
+>>> use test
+>>> db.auth("admin", "PASSWORD") #以admin權限登入test資料庫(讀寫皆可)，出現 1 就是成功
+>>> db.auth("user", "PASSWORD") #以user權限登入test資料庫(只能讀)，出現 1 就是成功
+# 之後就可以依照不同的權限使用mongodb了
 ```
 
 ## 基本操作
@@ -312,3 +331,101 @@ db.test.find({'name':'john','age':23}).sort({'age':1}).hint({'age':1,'name':1}).
 
 ```
 
+## 資料庫備份
+[資料參考1](https://blog.toright.com/posts/4069/mongodb-%E6%95%99%E5%AD%B8-%E5%A6%82%E4%BD%95%E5%82%99%E4%BB%BD%E8%88%87%E9%82%84%E5%8E%9F-mongodb.html)
+
+[資料參考2](https://itw01.com/NKDNEYK.html)
+
+下面的指令其實都只用在資料量較小的時候，如果資料量好幾TB，就不適合這種傳統備份檔案的方式，最好是用replication或sharding的方式
+
+```bash
+mongodump -h 127.0.0.1 -d my-mongo -o ./mongo-backup
+-h: 要備份的 MongoDB 連線位置
+-d: 要備份的 Database 名稱
+-u: 資料庫使用者名稱
+-p: 資料庫密碼
+-o: 會在該資料夾產生備份檔，以資料庫名稱作為資料夾分類
+```
+[備份的細節](https://ithelp.ithome.com.tw/articles/10165673)
+mongodump會把所有查詢結果寫入硬碟中，但因為可能有很多document還在記憶體中未寫入硬碟中，或是在執行備份的同時仍可能有很多新增、修改操作也正在執行中，導致備份出來的檔案是不完整的
+
+解法上面網址有寫， 備份前要做fsync和lock指令，讓記憶體的資料同步到硬碟中，還要鎖住這個db，讓寫入的操作都禁止
+```bash
+use admin
+db.runCommand({fsync:1,lock:1})
+db.currentOp() # 查看是否真的上鎖，true就是成功了，接著就可以備份資料了
+db.fsyncUnlock() # 記得解鎖
+```
+一個較完整的備份腳本，mongodb_backup.sh
+```bash
+#!/bin/sh
+# dump 命令執行路徑，根據mongodb安裝路徑而定
+DUMP=/usr/bin/mongodump
+# 臨時備份路徑
+OUT_DIR=/home/user/backup/mongodb/tmp_dir
+# 壓縮後的備份存放路徑
+TAR_DIR=/home/user/backup/mongodb/tar_dir
+# 當前系統時間
+DATE=`date +%Y-%m-%d_%H:%M:%S`
+# 資料庫帳號
+DB_USER=admin
+# 資料庫密碼
+DB_PASS=<password>
+# 刪除7天前的備份，即只保留近 7 天的備份
+DAYS=7
+# 最終儲存的資料庫備份檔案
+TAR_BAK="mongodb_$DATE.tar.gz"
+cd $OUT_DIR
+rm -rf $OUT_DIR/*
+mkdir -p $OUT_DIR/$DATE
+mongo admin --eval "printjson(db.fsyncLock())"
+$DUMP -h 127.0.0.1:27017 -u $DB_USER -p $DB_PASS -d pome -o $OUT_DIR/$DATE
+mongo admin --eval "printjson(db.fsyncUnlock())"
+# 壓縮格式為 .tar.gz 格式
+tar -zcvf $TAR_DIR/$TAR_BAK $OUT_DIR/$DATE
+# 刪除 7 天前的備份檔案
+find $TAR_DIR/ -mtime +$DAYS -delete
+exit
+```
+```bash
+sudo vi /etc/crontab # 或是crontab -e，去增加排程任務
+*       */1       *       *       *       root    sh /home/user/mongodb_backup.sh
+# 啟動服務，ubuntu16.04 改叫 cron 服務，以前的版本好像是叫 crond
+sudo systemctl start cron
+sudo systemctl enable cron
+```
+
+```bash
+mongorestore -h 127.0.0.1 -d my-mongo-new ./mongo-backup/my-mongo
+-h: 要還原的 MongoDB 連線位置
+-d: 要還原的 Database 名稱
+-u: 資料庫使用者名稱
+-p: 資料庫密碼
+--drop: 如果資料庫存在就刪除重新建立 (小心使用)
+<path>: 最後加入要還原的資料庫備份檔案
+```
+
+
+## 實際遇到的狀況，用pymongo實作
+```python
+# 一般使用日期區間的情形都是，判斷document裡的日期是否介於一段時間
+# 類似這樣的解法，很簡單
+db.test.find({'datetime':{'$gt':startDate,'$lte':endDate}})
+
+# 但這個狀況是要判斷今天是否介於document裡的startDate和endDate
+db.test.insert_many([
+{
+    name: "aa",
+    startDate: datetime.now()-timedelta(days=1),
+    endDate: datetime.now()
+},
+{
+    name: "bb",
+    startDate: datetime.now()-timedelta(days=1),
+    endDate: datetime.now()
+}
+])
+
+# solution，雖然是不同狀況，但也算簡單，利用$and字符
+db.test.find({'$and':[{'startDate':{'$lt':datetime.now()}},{'endDate':{'$gte':datetime.now()}}]},{'_id':0})
+```

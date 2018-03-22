@@ -1,3 +1,15 @@
+## ubuntu16.04安裝MySQL 5.7
+```bash
+sudo apt-get install -y mysql-server
+# 要記得設定root密碼
+# 啟動服務和開機後自動啟動服務
+sudo systemctl start mysql
+sudo systemctl enable mysql
+# 查看服務狀態是否成功
+systemctl status mysql.service
+```
+
+## 基本操作指令
 操作功能 | SQL 語法 | 說明
 |--- |---|---|
 建立資料庫 | create database 資料庫名稱; 	
@@ -46,14 +58,21 @@ and 條件式2;
 比對刪除條件值資料	delete from 資料表名稱 where 欄位名 like '%字串%';	
 
 ## root權限管理使用者和資料庫
-mysql -h (ip address，localhost就不需要了) -u (username) -p (password)#以root權限登入<br>
-create database (dbname);<br>
-create user 'user'@'localhost' identified by 'passwword';<br>
-grant all privileges on (dbname).* to 'user'@'localhost';<br>
-flush privileges;<br>
-quit<br>
-mysql -u user -p #確認可以使用(dbname)的資料庫<br> 
-若要讓所有ip都可連進某user的mysql<br>
+mysql -h (ip address，localhost就不需要了) -u (username) -p (password)#以root權限登入
+
+create database (dbname);
+
+create user 'user'@'localhost' identified by 'passwword';
+
+grant all privileges on (dbname).* to 'user'@'localhost';
+
+flush privileges;
+
+quit
+
+mysql -u user -p #確認可以使用(dbname)的資料庫
+
+若要讓所有ip都可連進某user的mysql
 ```
 use mysql
 select user,host from user;
