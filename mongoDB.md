@@ -42,7 +42,7 @@ db.shutdownServer()
 * kill -2 (mongod process ID)
 
 ## mongodb權限管理
-因mongodb預設安裝好後是沒有保護機制的，需自行建立登入機制保護資料<br>
+因mongodb預設安裝好後是沒有保護機制的，需自行建立登入機制保護資料
 ```bash
 use admin
 db.createUser({user:"root",pwd:"PASSWORD",roles:[{role:"root",db:"admin"}]})

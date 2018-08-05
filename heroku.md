@@ -56,3 +56,5 @@ heroku還可以作更進階的設定和addons
 ## 用heroku部屬自己的linebot服務
 [參考1](http://www.oxxostudio.tw/articles/201701/line-bot.html)
 [參考2](https://medium.com/@lukehong/%E5%86%8D%E6%88%B0-line-bot-sdk-%E6%8E%A5%E6%94%B6%E8%A8%8A%E6%81%AF%E8%88%87%E5%9B%9E%E6%87%89-aeb135eecc95)
+
+## 使用 database addons
