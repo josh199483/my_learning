@@ -9,3 +9,8 @@
 [webble send and receive data](https://zhuanlan.zhihu.com/p/20657057)
 
 [webble library](https://github.com/1oginov/Web-Bluetooth-Terminal/blob/master/js/BluetoothTerminal.js)
+
+[webble each os MTU(packet size)](https://github.com/WebBluetoothCG/web-bluetooth/issues/284)
+```bash
+mac os: 101
+```
