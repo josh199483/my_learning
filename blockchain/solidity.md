@@ -50,6 +50,33 @@ v/r/s | generated from sender's private key and can generate sender address
 
 [gas price ref!](https://docs.google.com/spreadsheets/d/1n6mRqkBz3iWcOlRem_mO09GtSKEKrAsfO7Frgx18pNU/edit#gid=0)
 
+## 'msg' global variable
+撰寫 solidity 時，就會存在在全域的變數
+property name | property
+---------|----------
+msg.data|data field
+msg.gas|amount of ags
+msg.sender|address of sender account
+msg.value|amount of ether that was sent with trx 
+## basic types
+types |
+------|
+string|
+bool  |
+int   | integer, positive or negative == int256
+int8, int16, ..., int256| ...
+uint  | integer,positive == uint256
+fixed/ufixed| number with decimal
+address| has method for sending money
+
+## reference types
+types |
+------|
+fixed array| unchanging length, single type
+dynamic array| single type, can change length
+mapping| key value, key has same type,value has same type
+struct | collection of key value can have different types
+
 ## 示意圖
 ![solidity flow](./solidity.png)
 
@@ -79,4 +106,30 @@ const source = fs.readFileSync(inboxPath, 'utf8');
 
 // bytecode 就是要 deploy 到 blockchain，interface 就是 ABI
 module.exports = solc.compile(source, 1).contracts[':Inbox'];
+```
+
+## require
+```js
+// require 也是個 global variable，只要條件不符合該function直接中斷
+function enter() public payable {
+    require(msg.value > .01 ether);
+}
+```
+
+## storage vs memory
+```js
+contract Numbers {
+    int[] public numbers;
+    
+    function Numbers() public {
+        numbers.push(20);
+        numbers.push(32);
+        // 如果用 storage 的話會讓 numbers 和 myArray 指向同一個位置(reference)
+        int[] storage myArray = numbers;
+        // 用  memory 的話，等於會複製一分到 memory 用完就會刪除，不會指向同一位置
+        int[] memory myArray = numbers;
+        myArray[0] = 1;
+    }
+}
+
 ```
