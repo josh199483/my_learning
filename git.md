@@ -103,3 +103,6 @@ git branch --set-upstream-to=origin/<branch> master
 
 # check local and remote branch relationship
 git branch -vv
+
+# remote branch
+[use remote branch](https://blog.longwin.com.tw/2013/11/git-create-remote-branch-2013/)

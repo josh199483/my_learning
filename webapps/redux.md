@@ -9,3 +9,5 @@ npm install --save-dev babel-core babel-eslint babel-loader babel-preset-es2015 
 
 # data flow
 ![redux data flow](./using-redux.jpg)
+
+[advanced](https://github.com/chentsulin/redux/tree/new-doc-zh-tw/docs)

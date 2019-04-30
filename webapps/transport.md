@@ -14,3 +14,8 @@
 ```bash
 mac os: 101
 ```
+
+# nfc
+[document](https://w3c.github.io/web-nfc/#examples)
+
+[nfc...](https://whatwebcando.today/nfc.html)
