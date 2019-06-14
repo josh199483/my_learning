@@ -1,4 +1,4 @@
-## 原型鍊
+## prototype
 [這篇很詳細](https://blog.techbridge.cc/2017/04/22/javascript-prototype/)
 
 ```js
@@ -64,3 +64,19 @@ npm install babel-plugin-transform-runtime –save-dev
   "plugins": ["transform-runtime"]
 }
 ```
+## weird parts!!!
+[weird part concept detail!](https://pjchender.blogspot.com/2016/07/javascript-frameworklibrary.html)
+
+## memory leak
+[memory leak in js](https://dzone.com/articles/eradicating-memory-leaks-in-javascript)
+
+[setTimeout](https://stackoverflow.com/questions/14034107/does-javascript-setinterval-method-cause-memory-leak)
+
+## map vs weakmap(ES6)
+[diff between map and weakmap](https://stackoverflow.com/questions/15604168/whats-the-difference-between-es6-map-and-weakmap)
+
+## how to implement private property in js
+[private property](https://tw.twincl.com/javascript/*6937)
+
+## axios
+[axios advanced](http://coderlt.coding.me/2017/03/21/axios-api-md/)

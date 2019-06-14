@@ -73,3 +73,6 @@ plugins: [
   })
 ]
 ```
+
+## setup env by webpack
+[define plugin](https://www.cnblogs.com/tugenhua0707/p/9780621.html)
