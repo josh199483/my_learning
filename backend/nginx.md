@@ -8,7 +8,7 @@
 
 [ssl for free](https://www.sslforfree.com/create?domains=firmware.sx-technology.com.tw)
 
-## setting reverse proxy
+## setting reverse proxy on debian 9
 ```conf
 # /etc/nginx/sites-available/<file>
 server {
@@ -88,4 +88,14 @@ server {
             #root /var/www/html/.well-known;  
         #}
 }
+```
+## /etc/hosts
+如果部屬在GCP上的時候不需要修改/etc/hosts，GCP已經設定好了??
+但如果自己部屬在自己的機器上就需要設定hosts這樣nginx才知道要把request導向哪台機器
+
+for example
+```conf
+#/etc/hosts
+test1.com 192.168.1.0
+test2.com 192.168.1.1
 ```
