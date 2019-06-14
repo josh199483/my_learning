@@ -95,3 +95,14 @@ git checkout develop
 
 git stash pop (也可以用取 id 的方式)
 
+# clone 遠端分支
+git clone -b develop(branch name) <repository url>
+
+# track remote branch
+git branch --set-upstream-to=origin/<branch> master
+
+# check local and remote branch relationship
+git branch -vv
+
+# pull remote branch to local
+[info](https://blog.csdn.net/carfge/article/details/79691360)

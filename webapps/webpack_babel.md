@@ -7,6 +7,23 @@
 # babel 主要功能
 例如:現在用ES6語法開發，但實際上線的瀏覽器環境有些還不支援ES6語法，可使用 babel編譯成ES5語法讓瀏覽器看得懂
 
+# 配置 .babelrc
+```bash
+# 這個設定檔是針對 babel6 的，babel5 預設是全部載入
+# presets 就是決定要編譯哪種語法
+# es2015是編譯ES6，react是編譯jsx，stage-0是編譯ES7
+# stage 又分 stage-0 到 stage-4階段，stage-0包含stage-1~stage-3所有功能
+# 詳情可參考 https://www.vanadis.cn/2017/03/18/babel-stage-x/
+{
+  "presets": [
+      "es2015"，
+      "react",
+      "stage-0"
+  ],
+  "plugins": []
+}
+```
+
 
 # 透過 npm 安裝
 ```bash
@@ -25,7 +42,11 @@ module.exports = {
   // output 是放入產生出來的結果的相關參數
   output: {
     path: `${__dirname}/dist`,
-    filename: 'index_bundle.js',
+    filename: 'bundle.js',
+  },
+  resolve: {
+    /* 設定 extensions 後 import 或 require 路徑只需要給檔名而不用加副檔名 */
+    extensions: [ '.js', '.jsx' ],
   },
   module: {
   	// loaders 則是放欲使用的 loaders，在這邊是使用 babel-loader 將所有 .js（這邊用到正則式）相關檔案（排除了 npm 安裝的套件位置 node_modules）轉譯成瀏覽器可以閱讀的 JavaScript。preset 則是使用的 babel 轉譯規則，這邊使用 react、es2015。若是已經單獨使用 .babelrc 作為 presets 設定的話，則可以省略 query
@@ -36,13 +57,19 @@ module.exports = {
         loader: 'babel-loader',
       }]
     }],
-  },
-  // devServer 則是 webpack-dev-server 設定
-  devServer: {
-    inline: true,
-    port: 8008,
-  },
-  // plugins 放置所使用的外掛
-  plugins: [HTMLWebpackPluginConfig],
+  }
 };
+```
+
+# plugin
+## html-webpack-plugin
+```js
+// 這個 plugin 功能是讓 webpack 能自動產生 html 檔並且把前面設定的 output(bundle.js)
+// 塞進 html 的script，例:<script type="text/javascript" src="bundle.js"></script>
+// 指定 template 就是從現有的 html 複製一份再插入 script
+plugins: [
+  new HtmlWebpackPlugin({
+    template: 'src/index.html'
+  })
+]
 ```
