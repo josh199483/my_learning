@@ -5,6 +5,9 @@ npm install --save react react-dom
 # javascript this 的用法
 [ref](https://software.intel.com/zh-cn/blogs/2013/10/09/javascript-this)
 
+# lifecycle
+![react lifecycle](./react-life.png)
+
 # 初次使用
 ```js
 import React from 'react';
