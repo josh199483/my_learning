@@ -1,4 +1,6 @@
 # bitcoin
+[simple concept of blockchain](https://medium.com/cobinhood-%E4%B8%AD%E6%96%87%E5%A0%B1/tagged/blockchain-technology)
+
 [change address strategy](https://bitzuma.com/posts/five-ways-to-lose-money-with-bitcoin-change-addresses/)
 
 [opcodes wiki](https://en.bitcoin.it/wiki/Script)
@@ -42,6 +44,8 @@
 [bitcore-lib error 3](https://github.com/bitpay/bitcore/issues/1454)
 
 [address prefix](https://en.bitcoin.it/wiki/List_of_address_prefixes)
+
+[multisig example](https://gist.github.com/gavinandresen/3966071)
 
 # bitcoincash
 [mastering bitcoincash](https://developer.bitcoin.com/mastering-bitcoin-cash/4-transactions/)

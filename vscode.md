@@ -5,3 +5,7 @@
 
 # indentation
 [reference](https://contemplator.github.io/blog/2017/06/16/VS-code-%E6%8E%A7%E5%88%B6-Tab-%E5%A4%A7%E5%B0%8F/)
+
+# ios
+## can not update
+move vscode from download folder to application

@@ -153,3 +153,6 @@ class Todo extends React.Component {
   }
 }
 ```
+
+## suspense and hook
+[suspense and hook deep concept](https://segmentfault.com/a/1190000017483690)

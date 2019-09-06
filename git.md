@@ -4,7 +4,7 @@ git config --global user.name "account"
 git config --global user.email "email address"
 
 # generate ssh key,open git bash
-ssh-keygen 
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" (2048 wiil be failed)
 
 複製 public 到 ssh key 驗證(到gitlab 網站右上角 -> setting -> 點選 ssh key)
 
@@ -104,7 +104,13 @@ git branch --set-upstream-to=origin/<branch> master
 # check local and remote branch relationship
 git branch -vv
 
+# change remote url
+[set-url](https://help.github.com/en/articles/changing-a-remotes-url)
+
 # pull remote branch to local
 [info](https://blog.csdn.net/carfge/article/details/79691360)
 # remote branch
 [use remote branch](https://blog.longwin.com.tw/2013/11/git-create-remote-branch-2013/)
+
+# git authentication
+[fatal authentication](https://stackoverflow.com/questions/47860772/gitlab-remote-http-basic-access-denied-and-fatal-authentication)

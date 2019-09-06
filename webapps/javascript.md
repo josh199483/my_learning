@@ -80,3 +80,22 @@ npm install babel-plugin-transform-runtime –save-dev
 
 ## axios
 [axios advanced](http://coderlt.coding.me/2017/03/21/axios-api-md/)
+
+## number type issue
+[different integer type](https://blog.angularindepth.com/javascripts-number-type-8d59199db1b6)
+
+## object params or params list
+
+Based on my observation on those popular libraries design, here are the scenarios we should use option object:
+
+- The parameter list is long (>4).
+- Some or all parameters are optional and they don’t rely on a certain order.
+- The parameter list might grow in future API update.
+- The API will be called from other code and the API name is not clear enough to tell the parameters’ meaning. So it might need strong parameter name for readability.
+
+And scenarios to use parameter list:
+
+- Parameter list is short (<= 4).
+- Most of or all of the parameters are required.
+- Optional parameters are in a certain order. (i.e.: $.get )
+- Easy to tell the parameters meaning by API name.

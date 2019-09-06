@@ -1,0 +1,1 @@
+[web assembly](https://blog.techbridge.cc/2017/06/17/webassembly-js-future/)

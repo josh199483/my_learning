@@ -1,3 +1,4 @@
+# public/private key
 [compressed & uncompressed public key](https://bitcoin.stackexchange.com/questions/69315/how-are-compressed-pubkeys-generated/69322?noredirect=1#comment80498_69322)
 
 ```bash
@@ -19,3 +20,6 @@ coresponding bitcoin addresses:
 [cryptocurrency address info1](https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings)
 
 [cryptocurrency address info2](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
+
+# offline multisig TSS
+[TSS](https://www.blocktempo.com/maicoin-amis-wallet-combine-cold-wallet-and-online-storage/)
