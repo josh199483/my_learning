@@ -21,5 +21,7 @@ coresponding bitcoin addresses:
 
 [cryptocurrency address info2](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 
+[cryptocurrency address info3](https://github.com/libbitcoin/libbitcoin-system/wiki/Altcoin-Version-Mappings#bip44-altcoin-version-mapping-table)
+
 # offline multisig TSS
 [TSS](https://www.blocktempo.com/maicoin-amis-wallet-combine-cold-wallet-and-online-storage/)

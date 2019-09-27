@@ -115,24 +115,27 @@ pod install # need to install by cocoapods!
 
 [multasking ipad upload error](https://stackoverflow.com/questions/32559724/ipad-multitasking-support-requires-these-orientations)
 
-## android
-### Permission
-[ble permission](https://hsiangyu.com/blog/2017/09/04/react-native-permissionsandroid/)
-
-
-## about xcode
+### about xcode
 [Connection has no connected handler](https://stackoverflow.com/questions/44081674/react-native-connection-has-no-connection-handler-error-meaning)
 
-# boilerplate tool
-[ignite](https://github.com/infinitered/ignite)
-
-# 上架
-[上架url](https://appstoreconnect.apple.com)
-
-# iOS
-## settimeout
+### settimeout
 [implement settimeout in swift with javascript](https://ask.helplib.com/javascript/post_13724104)
 
 [modify bundle identifier](https://stackoverflow.com/questions/36119754/how-to-change-the-bundle-identifier-within-react-native)
 
 [app store guide](https://help.apple.com/app-store-connect/#/dev82a6a9d79)
+
+### boilerplate tool
+[ignite](https://github.com/infinitered/ignite)
+
+### release
+[上架url](https://appstoreconnect.apple.com)
+
+[splash screen](https://stackoverflow.com/questions/34027270/ios-launch-screen-in-react-native)
+
+[splash screen and generator tool](https://github.com/bamlab/generator-rn-toolbox/tree/master/generators/assets)
+
+
+## android
+### Permission
+[ble permission](https://hsiangyu.com/blog/2017/09/04/react-native-permissionsandroid/)
