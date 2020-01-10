@@ -51,7 +51,7 @@ cd ios
 pod install # need to install by cocoapods!
 ```
 
-[use nodejs core module on react native](https://www.npmjs.com/package/rn-nodeify)
+[use nodejs core module on react native rn-nodeify](https://www.npmjs.com/package/rn-nodeify)
 
 [native app link](https://github.com/FiberJW/react-native-app-link)
 
@@ -61,9 +61,37 @@ pod install # need to install by cocoapods!
 
 [add icon image to app(ios/android)](https://medium.com/better-programming/react-native-add-app-icons-and-launch-screens-onto-ios-and-android-apps-3bfbc20b7d4c)
 
+[react native permission](https://github.com/react-native-community/react-native-permissions)
+```
+ios permission need to use pod install which permission you want to add
+
+有一些版本上的問題
+https://github.com/moaazsidat/react-native-qrcode-scanner/issues/201
+```
+
+## iOS
+[app store guide](https://help.apple.com/app-store-connect/#/dev82a6a9d79)
+
 [testflight](https://medium.com/%E5%BD%BC%E5%BE%97%E6%BD%98%E7%9A%84-swift-ios-app-%E9%96%8B%E7%99%BC%E6%95%99%E5%AE%A4/%E6%B8%AC%E8%A9%A6%E5%90%A7-testflight-20f1f77a2ce0)
 
 [react naitve exception handler](https://github.com/master-atul/react-native-exception-handler)
+
+### pod
+[react native config with pod](https://github.com/luggit/react-native-config/issues/187)
+
+### boilerplate tool
+[ignite](https://github.com/infinitered/ignite)
+
+### release
+[上架url](https://appstoreconnect.apple.com)
+
+[splash screen](https://stackoverflow.com/questions/34027270/ios-launch-screen-in-react-native)
+
+[splash screen and generator tool](https://github.com/bamlab/generator-rn-toolbox/tree/master/generators/assets)
+
+[different app display name](https://medium.com/swift2go/different-app-display-name-based-on-xcode-scheme-d709307d0c01)
+
+
 
 # problem
 ## iOS
@@ -123,18 +151,9 @@ pod install # need to install by cocoapods!
 
 [modify bundle identifier](https://stackoverflow.com/questions/36119754/how-to-change-the-bundle-identifier-within-react-native)
 
-[app store guide](https://help.apple.com/app-store-connect/#/dev82a6a9d79)
+[directory not found for option](https://blog.csdn.net/zhyl8157121/article/details/48844573)
 
-### boilerplate tool
-[ignite](https://github.com/infinitered/ignite)
-
-### release
-[上架url](https://appstoreconnect.apple.com)
-
-[splash screen](https://stackoverflow.com/questions/34027270/ios-launch-screen-in-react-native)
-
-[splash screen and generator tool](https://github.com/bamlab/generator-rn-toolbox/tree/master/generators/assets)
-
+[library not found for -](https://blog.csdn.net/liujia216/article/details/53112709)
 
 ## android
 ### Permission

@@ -76,3 +76,29 @@ plugins: [
 
 ## setup env by webpack
 [define plugin](https://www.cnblogs.com/tugenhua0707/p/9780621.html)
+
+# babel 7(newest version)
+frequently use
+```bash
+npm install --save-dev @babel/core @babel/preset-env @babel/preset-flow
+babel-loader babel-eslint webpack webpack-cli webpack-dev-server
+```
+```json
+"presets": [
+  "@babel/preset-env",
+  "@babel/preset-flow"
+]
+```
+
+preset is set of plugin, if needed you can install plugin
+
+for example i want to use this export usage
+```js
+export module from 'module'
+```
+you can install @babel/plugin-proposal-export-default-from and add in .babelrc
+```json
+{
+  "plugins": ["@babel/plugin-proposal-export-default-from"]
+}
+```

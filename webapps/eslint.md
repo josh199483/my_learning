@@ -114,3 +114,6 @@ npm --save-dev install eslint-plugin-react
   "extends": ["airbnb-base"]
 }
 ```
+
+## eslint integrate with git
+[pre-commit](https://larrylu.blog/improve-code-quality-using-eslint-742cf1f384f1)

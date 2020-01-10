@@ -236,9 +236,8 @@ Object.bsonsize(db.test.findOne({name:"123"})) #可看到該筆紀錄大小
   ]
 }
 # 若要更新book list裡面當subdocument的bookId為特定值(例:41)的description(原本沒有的欄位)，有點拗口...，來看個範例吧!
-# 因為是原本沒有的欄位，所以使用{upsert:true}參數，代表當沒有此欄位時就insert一筆
 # $字號在此的用處是update的條件有book.bookId，那後面要更改的欄位加上$字號代表會參照前面相同位置的條件(placeholder)去更改
-db.test.updateOne({'name':'wayne','book.bookId':41},{$set:{'book.$.description':'test'}},{upsert:true})
+db.test.updateOne({'name':'wayne','book.bookId':41},{$set:{'book.$.description':'test'}})
 { "_id" : 1,
   "name" : "wayne",
   "book" : [
@@ -283,6 +282,13 @@ mongoDB官網有提供一種自行手動建立事務操作的範例，在進行�
 ## mongoDB索引
 [參考網頁](http://marklin-blog.logdown.com/posts/1394035-30-11-index-of-mongodb-1-button)
 建立索引就像建立一個目錄一樣
+
+### unique key
+```
+db.students.createIndex( { "studentId": 1 }, { unique: true } )
+
+db.students.createIndex({ "studentId": 1, lastname: 1, firstname: 1  },{ unique: true } )
+```
 
 優點:
 - 搜尋速度極快
