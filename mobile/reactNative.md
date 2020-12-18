@@ -17,6 +17,14 @@
 
 [component lib](https://react-native-training.github.io/react-native-elements/docs/overview.html)
 
+[RN code push tutorial](https://github.com/crazycodeboy/RNStudyNotes/tree/master/React%20Native%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E3%80%81%E7%83%AD%E6%9B%B4%E6%96%B0-CodePush%E6%9C%80%E6%96%B0%E9%9B%86%E6%88%90%E6%80%BB%E7%BB%93)
+
+[RN environments](https://dev.to/calintamas/how-to-manage-staging-and-production-environments-in-a-react-native-app-4naa)
+
+[fastlane](https://docs.fastlane.tools/)
+
+[fastlane+jenkin](https://www.appcoda.com.tw/continuous-delivery/)
+
 ### symlink with library
 because RN is not support symlink now, so i use wml to listen change
 [wml](https://github.com/wix/wml)
@@ -130,6 +138,9 @@ https://github.com/moaazsidat/react-native-qrcode-scanner/issues/201
 3. Go to build phases and add libRNGestureHandler.a
 
 ```
+### can not read stream
+[solution](https://www.npmjs.com/package/rn-nodeify)
+rn-nodeify install "stream"
 
 
 ### request to local api server

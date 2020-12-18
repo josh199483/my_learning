@@ -42,3 +42,21 @@
 [禮品卡](https://www.blocktempo.com/paxful-is-the-most-important-bitcoin-company-you-arent-paying-attention-to/)
 
 [企業案例類型](https://www.blocktempo.com/gartner-blockchain-enterprise-applications-study/)
+
+[Dlive](https://www.blocktempo.com/dlive-joins-bittorrent-ecosystem/)
+
+[ETH 潛在市場](https://news.blocktempo.com/eth-would-become-trillion-dollars-economic-bendwidth/)
+
+[ICE Bakkt 應用](https://news.blocktempo.com/ice-ceo-envisions-bakkts-consumer-app-as-loyalty-point-marketplace/)
+
+[coinbase vs binance](https://www.blocktempo.com/binance-coinbase-global-tactic/)
+
+[dapp market](https://www.blocktempo.com/2019-01-dapp-ecosystem-state/)
+
+[defi 可使用的金融場景](https://www.blocktempo.com/defi-explain-and-permissionless-is-advantage/)
+
+[flash loan 閃電貸](https://www.blocktempo.com/dzx-lost-350-thousands-about-flash-loan/)
+
+[dharma p2p借貸，固定利率](https://www.blocktempo.com/dharma-another-ethereum-p2p-lending-platform/)
+
+[chainlink](https://www.blocktempo.com/ontology-partners-with-chainlink-to-provide-secure-off-chain-connections/)

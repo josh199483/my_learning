@@ -8,3 +8,6 @@
 [api token usage](https://david740204.pixnet.net/blog/post/459490642-rest-api%E5%AE%89%E5%85%A8%E6%A9%9F%E5%88%B6)
 
 [oAuth2.0 spec](https://blog.yorkxin.org/2013/09/30/oauth2-1-introduction)
+
+# FIDO2
+[webAuthn](https://blog.techbridge.cc/2019/08/17/webauthn-intro/)
